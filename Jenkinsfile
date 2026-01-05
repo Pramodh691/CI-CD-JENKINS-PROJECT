@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_PATH = 'C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe'
-        IMAGE_NAME  = 'pramodh691/ci-cd-jenkins-project'
-        IMAGE_TAG   = 'latest'
+        DOCKER_PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"
+        IMAGE_NAME  = "pramo691/ci-cd-jenkins-project"
+        IMAGE_TAG   = "latest"
     }
 
     stages {
@@ -36,7 +36,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t pramo691/ci-cd-jenkins-project:latest ."
+                bat "\"${DOCKER_PATH}\" build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
 
@@ -47,8 +47,8 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u %DOCKER_USER% -p %DOCKER_PASS%'
-                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"push pramo691/ci-cd-jenkins-project:latest,
+                    bat "\"${DOCKER_PATH}\" login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                    bat "\"${DOCKER_PATH}\" push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
