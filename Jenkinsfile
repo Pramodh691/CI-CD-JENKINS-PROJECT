@@ -8,13 +8,6 @@ pipeline {
     }
 
     stages {
-
-        stage('Clean Workspace') {
-            steps {
-                deleteDir()
-            }
-        }
-
         stage('Checkout') {
             steps {
                 git branch: 'main',
