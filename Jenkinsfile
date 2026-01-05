@@ -40,7 +40,7 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat "\"${DOCKER_PATH}\" login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                    bat "echo %DOCKER_PASS% | \"${DOCKER_PATH}\" login -u %DOCKER_USER% --password-stdin"
                     bat "\"${DOCKER_PATH}\" push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
