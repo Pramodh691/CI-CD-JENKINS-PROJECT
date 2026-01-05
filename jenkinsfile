@@ -30,7 +30,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t pramodh691/ci-cd-jenkins-project:latest .'
+                sh '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t pramodh691/ci-cd-jenkins-project:latest .'
             }
         }
 
@@ -42,9 +42,10 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh '''
-                      echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                      docker push pramodh691/ci-cd-jenkins-project:latest
+                    "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u %DOCKER_USER% -p %DOCKER_PASS%
+                    "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" push pramodh691/ci-cd-jenkins-project:latest
                     '''
+
                 }
             }
         }
