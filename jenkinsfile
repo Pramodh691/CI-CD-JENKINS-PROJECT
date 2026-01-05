@@ -1,29 +1,50 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "pramodh691/ci-cd-jenkins-project"
+        DOCKER_TAG = "latest"
+    }
+
     stages {
 
-        stage('Clone Code') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/Pramodh691/ci-cd-jenkins-project.git'
+                git branch: 'main',
+                    url: 'https://github.com/Pramodh691/CI-CD-JENKINS-PROJECT.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                sh 'docker build -t yourdockerhub/web-app:latest .'
+                echo "Build stage completed"
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Test') {
             steps {
-                sh 'docker push yourdockerhub/web-app:latest'
+                echo "Test stage completed"
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Docker Build') {
             steps {
-                sh 'kubectl apply -f kubernetes/'
+                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                      echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                      docker push $DOCKER_IMAGE:$DOCKER_TAG
+                    '''
+                }
             }
         }
     }
