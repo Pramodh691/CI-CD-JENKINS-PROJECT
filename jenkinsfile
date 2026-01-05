@@ -36,7 +36,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat "\"%DOCKER_PATH%\" build -t %IMAGE_NAME%:%IMAGE_TAG% ."
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t pramo691/ci-cd-jenkins-project:latest ."
             }
         }
 
@@ -47,10 +47,8 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat """
-                    \"%DOCKER_PATH%\" login -u %DOCKER_USER% -p %DOCKER_PASS%
-                    \"%DOCKER_PATH%\" push %IMAGE_NAME%:%IMAGE_TAG%
-                    """
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"push pramo691/ci-cd-jenkins-project:latest,
                 }
             }
         }
